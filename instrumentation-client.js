@@ -5,16 +5,27 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: "https://ddd011e8a196dd3046fbc7626c4e19ed@o4510291849248768.ingest.us.sentry.io/4510291858948096",
-
-  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: 1,
-  // Enable logs to be sent to Sentry
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV || "development",
+  tracesSampleRate: parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE || "1.0"),
   enableLogs: true,
-
-  // Enable sending user PII (Personally Identifiable Information)
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
   sendDefaultPii: true,
+
+  initialScope: {
+    tags: {
+      component: "client",
+    },
+  },
+
+  // Filter out known errors (browser extensions, etc.)
+  beforeSend(event, hint) {
+    // Don't send errors from browser extensions
+    if (event.exception?.values?.[0]?.value?.includes('chrome-extension://') ||
+        event.exception?.values?.[0]?.value?.includes('moz-extension://')) {
+      return null;
+    }
+    return event;
+  },
 });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

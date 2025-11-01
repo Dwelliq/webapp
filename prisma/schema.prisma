@@ -43,6 +43,13 @@ model Property {
   suburb      String
   state       String
   postcode    String?
+  lat         Float?
+  lng         Float?
+  propertyType String?  // e.g., "house", "apartment", "townhouse"
+  beds        Int?
+  baths       Int?
+  parking     Int?
+  landSize    Float?    // in square meters
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   
@@ -56,6 +63,7 @@ model Listing {
   id                String        @id @default(cuid())
   status            ListingStatus @default(REVIEW)
   ownershipVerified Boolean       @default(false)
+  paid              Boolean       @default(false)
   priceMin          Float?
   priceMax          Float?
   photoKeys         String[]

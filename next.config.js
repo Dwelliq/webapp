@@ -9,8 +9,8 @@ module.exports = withSentryConfig(
     // For all available options, see:
     // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-    org: "dwelliq",
-    project: "dwelliq",
+    org: process.env.SENTRY_ORG || "dwelliq",
+    project: process.env.SENTRY_PROJECT || "dwelliq",
 
     // Only print logs for uploading source maps in CI
     silent: !process.env.CI,
