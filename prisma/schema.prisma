@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ListingStatus {
+  REVIEW
+  LIVE
+  PAUSED
+  REJECTED
+  SOLD
+}
+
+model User {
+  id          String    @id @default(cuid())
+  clerkId     String    @unique
+  email       String    @unique
+  name        String?
+  kycStatus   String?   // KYC verification status
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  listings    Listing[]
+  offers      Offer[]
+  messages    Message[]
+  handovers   Handover[]
+}
+
+model Property {
+  id          String    @id @default(cuid())
+  address     String
+  suburb      String
+  state       String
+  postcode    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  listings    Listing[]
+  
+  @@index([suburb])
+  @@index([state])
+}
+
+model Listing {
+  id                String        @id @default(cuid())
+  status            ListingStatus @default(REVIEW)
+  ownershipVerified Boolean       @default(false)
+  priceMin          Float?
+  priceMax          Float?
+  photoKeys         String[]
+  description       String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  propertyId        String
+  property          Property      @relation(fields: [propertyId], references: [id])
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  
+  offers            Offer[]
+  messages          Message[]
+  handover          Handover?
+  
+  @@index([status])
+}
+
+model Offer {
+  id          String    @id @default(cuid())
+  amount      Float
+  message     String?
+  status      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  listingId  String
+  listing    Listing   @relation(fields: [listingId], references: [id])
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  
+  messages    Message[]
+  handover    Handover?
+  conveyancer Conveyancer?
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  
+  listingId String?
+  listing   Listing? @relation(fields: [listingId], references: [id])
+  offerId   String?
+  offer     Offer?   @relation(fields: [offerId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Conveyancer {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  phone       String?
+  firmName    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  offerId     String   @unique
+  offer       Offer    @relation(fields: [offerId], references: [id])
+}
+
+model Handover {
+  id          String   @id @default(cuid())
+  scheduledAt DateTime?
+  completedAt DateTime?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  listingId   String   @unique
+  listing     Listing  @relation(fields: [listingId], references: [id])
+  offerId     String   @unique
+  offer       Offer    @relation(fields: [offerId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+}
