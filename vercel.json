@@ -1,9 +1,8 @@
 {
-  "buildCommand": "cd ../.. && pnpm prisma generate && pnpm prisma migrate deploy && cd apps/web && pnpm build",
-  "outputDirectory": ".next",
-  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "pnpm prisma generate && pnpm prisma migrate deploy && cd apps/web && pnpm build",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "pnpm install",
   "framework": "nextjs",
-  "regions": ["syd1"],
-  "rootDirectory": "apps/web"
+  "regions": ["syd1"]
 }
 
