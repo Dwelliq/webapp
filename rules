@@ -1,0 +1,112 @@
+Rules:
+• Keep public pages SSR for SEO.
+• Add correct titles/meta + JSON-LD on listing pages.
+• No breaking changes to existing APIs or Prisma schema.
+• Validate inputs with Zod.
+• a11y: semantic headings, labels, alt text, keyboard focus.
+• Keep changes scoped to the files I select with /edit.
+• Write small diffs; stop after each section.
+
+Summary:
+Summary for ChatGPT:
+
+---
+
+## Project summary: Real estate listing platform
+
+### Tech stack
+- Next.js 16.0.1 (App Router)
+- TypeScript
+- Prisma ORM with PostgreSQL (Supabase)
+- Clerk authentication
+- Stripe payments
+- UploadThing (file uploads)
+- Mapbox (geocoding/autocomplete)
+- Resend (emails)
+- Sentry (error tracking)
+- Tailwind CSS
+- Monorepo structure with pnpm
+
+### Database schema (Prisma)
+Models: `User`, `Property`, `Listing`, `Offer`, `Message`, `Conveyancer`, `Handover`
+- User syncs with Clerk (`clerkId`, `kycStatus`)
+- Listing status enum: `REVIEW`, `LIVE`, `PAUSED`, `REJECTED`, `SOLD`
+- Property includes address, coordinates (lat/lng), beds, baths, parking, land size, property type
+
+### Backend/API routes built
+- `/api/listings/create` — create/update listings
+- `/api/listings/[id]/submit` — submit for moderation
+- `/api/billing/listing-checkout` — Stripe Checkout session creation
+- `/api/billing/webhook` — Stripe webhook handler (marks listing as paid)
+- `/api/uploadthing` — UploadThing file upload endpoint
+- `/api/test-email` — Resend email testing
+- `/api/test-sentry` — Sentry error testing
+
+### Authentication setup
+- Clerk integrated with `clerkMiddleware()`
+- Server helper `getCurrentUser()` syncs Clerk users with Prisma
+- POST routes and API routes protected by middleware
+- `ClerkProvider` in root layout
+
+### Frontend built (seller flow)
+
+1. Create listing wizard (`/sell/new`):
+   - 6-step wizard with progress indicator
+   - Step 1: AddressStep — Mapbox autocomplete, captures address + lat/lng
+   - Step 2: DetailsStep — property type, beds, baths, parking, land size, description
+   - Step 3: PhotosStep — UploadThing integration, max 30 photos, 8MB each
+   - Step 4: PricingStep — price min/max inputs, "comparable sales" stub
+   - Step 5: PayStep — Stripe Checkout redirect if not paid
+   - Step 6: SubmitStep — submit for moderation (only if paid)
+   - Auto-saves on step progression
+
+2. Seller dashboard (`/sell/listings`):
+   - Lists user's listings with status badges
+   - Shows property details, price ranges, creation date, payment status
+   - "Create New Listing" button
+
+### Frontend missing
+- Homepage (`/`) — currently default Next.js template
+- Public listing browse/search — no marketplace view
+- Public listing detail pages — no buyer-facing listing pages
+- Navigation/header — no global navigation component
+- User account/profile pages — no account management UI
+- Footer — no site footer
+
+### Project structure
+```
+apps/web/
+  src/
+    app/
+      api/              # All API routes
+      sell/
+        new/            # Create listing wizard
+        listings/       # Seller dashboard
+      page.tsx          # Homepage (default template)
+    components/
+      sell/             # Step components for wizard
+    lib/
+      auth.ts           # getCurrentUser() helper
+      prisma.ts         # Prisma client singleton
+      email.ts          # Resend utility
+      sentry.ts         # Sentry helpers
+    middleware.ts        # Clerk middleware
+```
+
+### Deployment
+- Configured for Vercel (monorepo with root directory `apps/web`)
+- Environment variables set up for all services
+- Prisma generates to `generated/prisma` at project root
+- Build process configured and working
+
+### Current state
+- Backend: complete API infrastructure
+- Seller flow: functional multi-step listing creation
+- Buyer flow: nothing built yet
+- Public pages: none (except default homepage)
+
+---
+
+Note: The app has a working seller experience for creating and managing listings, but no public-facing pages for browsing, searching, or viewing listings. Need guidance on building the buyer-facing frontend including homepage, listing browse/search, listing detail pages, navigation, and any other public pages.
+
+Use this summary to generate a detailed prompt for building the frontend.

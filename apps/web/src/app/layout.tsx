@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,7 +31,15 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {children}
+          <a
+            href="#main-content"
+            className="absolute left-[-9999px] focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:outline-none"
+          >
+            Skip to content
+          </a>
+          <Header />
+          <main id="main-content">{children}</main>
+          <Footer />
         </body>
       </html>
     </ClerkProvider>
