@@ -11,18 +11,19 @@
    - Import your GitHub repository: `Dwelliq/webapp`
    - If it's not listed, click **"Adjust GitHub App Permissions"** to give Vercel access
 
-3. **Configure Project**
+3. **Configure Project** (CRITICAL for Monorepo)
    - **Project Name**: `webapp` (or your preferred name)
-   - **Root Directory**: Leave blank (or set to `apps/web` if your Next.js app is in a monorepo subdirectory)
-   - **Framework Preset**: Next.js (should auto-detect)
-   - **Build Command**: `pnpm build` (or leave default)
-   - **Output Directory**: `.next` (default)
-   - **Install Command**: `pnpm install`
+   - **Root Directory**: `apps/web` ⚠️ **MUST SET THIS** - This tells Vercel where your Next.js app is
+   - **Framework Preset**: Next.js (should auto-detect after setting root directory)
+   - **Build Command**: Leave default (Vercel will use the one from vercel.json or auto-detect)
+   - **Output Directory**: Leave default (`.next` - Vercel will find it in apps/web)
+   - **Install Command**: Leave default (`pnpm install`)
 
 4. **Important for Monorepo Setup**
-   - If your Next.js app is in `apps/web`, set:
-     - **Root Directory**: `apps/web`
-     - Vercel will automatically detect it's a Next.js app
+   - ⚠️ **YOU MUST SET ROOT DIRECTORY TO `apps/web` IN VERCEL DASHBOARD**
+   - Go to: Project Settings → General → Root Directory → Set to `apps/web`
+   - This is REQUIRED for Vercel to find your Next.js app and detect the framework
+   - The `vercel.json` file cannot set rootDirectory - it must be done in the dashboard
 
 ---
 
@@ -261,18 +262,27 @@ Every push to a branch creates a preview deployment:
 - Check `STRIPE_WEBHOOK_SECRET` matches Stripe dashboard
 - Test webhook in Stripe dashboard → Webhooks → [Your webhook] → Send test webhook
 
-### Issue: Prisma Client Not Generated
+### Issue: "Command 'prisma' not found" or Prisma Client Not Generated
 
 **Solution**:
-Add to `package.json`:
-```json
-{
-  "scripts": {
-    "postinstall": "prisma generate",
-    "build": "prisma generate && prisma migrate deploy && next build"
-  }
-}
+The build script in `apps/web/package.json` already handles this. If you still get errors:
+
+1. **Verify Root Directory is set to `apps/web`** in Vercel dashboard
+2. **Check build command** uses `npx prisma` (not `pnpm prisma`)
+3. **Ensure Prisma is in root `package.json` dependencies** (not devDependencies)
+
+The current setup:
+- `apps/web/package.json` has `build` script that runs `npx prisma generate` from root
+- `npx` will find prisma in parent `node_modules`
+- `postinstall` also runs prisma generate as a backup
+
+If it still fails, you can also try:
+```bash
+# In vercel.json buildCommand:
+"buildCommand": "cd ../.. && npx prisma generate && cd apps/web && pnpm build"
 ```
+
+But the package.json script approach should work.
 
 ---
 
