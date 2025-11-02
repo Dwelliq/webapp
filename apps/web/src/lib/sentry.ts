@@ -24,7 +24,6 @@ export async function setSentryUser() {
 export function setSentryContext(context: {
   tags?: Record<string, string>;
   extra?: Record<string, any>;
-  level?: "debug" | "info" | "warning" | "error" | "fatal";
 }) {
   if (context.tags) {
     Object.entries(context.tags).forEach(([key, value]) => {
@@ -36,10 +35,6 @@ export function setSentryContext(context: {
     Object.entries(context.extra).forEach(([key, value]) => {
       Sentry.setContext(key, value);
     });
-  }
-  
-  if (context.level) {
-    Sentry.setLevel(context.level);
   }
 }
 

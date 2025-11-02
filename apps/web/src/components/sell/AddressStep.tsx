@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+
+// Import CSS (this is safe for SSR)
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 type AddressStepProps = {
@@ -29,46 +30,60 @@ export function AddressStep({
   totalSteps,
 }: AddressStepProps) {
   const geocoderRef = useRef<HTMLDivElement>(null);
-  const geocoderInstanceRef = useRef<MapboxGeocoder | null>(null);
+  const geocoderInstanceRef = useRef<any>(null);
 
   useEffect(() => {
-    const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-    if (!mapboxToken || !geocoderRef.current) return;
+    // Dynamically import MapboxGeocoder only on client side to avoid SSR issues
+    let geocoder: any = null;
+    let MapboxGeocoder: any = null;
 
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxToken,
-      placeholder: "Search for an address",
-      countries: "au", // Australia
-      proximity: [151.2093, -33.8688], // Sydney coordinates (optional)
-      types: "address",
-    });
+    const initGeocoder = async () => {
+      const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+      if (!mapboxToken || !geocoderRef.current) return;
 
-    geocoder.addTo(geocoderRef.current);
+      // Dynamic import to avoid server-side bundling
+      const MapboxGeocoderModule = await import("@mapbox/mapbox-gl-geocoder");
+      MapboxGeocoder = MapboxGeocoderModule.default as any;
 
-    geocoder.on("result", (e: any) => {
-      const result = e.result;
-      const context = result.context || [];
-      
-      // Extract address components
-      const address = result.place_name || result.text;
-      const postcode = context.find((c: any) => c.id.startsWith("postcode"))?.text || "";
-      const suburb = context.find((c: any) => c.id.startsWith("place"))?.text || "";
-      const state = context.find((c: any) => c.id.startsWith("region"))?.text || "";
-
-      updateFormData({
-        address,
-        suburb,
-        state,
-        postcode,
-        lat: result.center[1],
-        lng: result.center[0],
+      geocoder = new MapboxGeocoder({
+        accessToken: mapboxToken,
+        placeholder: "Search for an address",
+        countries: "au", // Australia
+        proximity: [151.2093, -33.8688], // Sydney coordinates (optional)
+        types: "address",
       });
-    });
 
-    geocoderInstanceRef.current = geocoder;
+      geocoder.addTo(geocoderRef.current);
+
+      geocoder.on("result", (e: any) => {
+        const result = e.result;
+        const context = result.context || [];
+        
+        // Extract address components
+        const address = result.place_name || result.text;
+        const postcode = context.find((c: any) => c.id.startsWith("postcode"))?.text || "";
+        const suburb = context.find((c: any) => c.id.startsWith("place"))?.text || "";
+        const state = context.find((c: any) => c.id.startsWith("region"))?.text || "";
+
+        updateFormData({
+          address,
+          suburb,
+          state,
+          postcode,
+          lat: result.center[1],
+          lng: result.center[0],
+        });
+      });
+
+      geocoderInstanceRef.current = geocoder;
+    };
+
+    initGeocoder();
 
     return () => {
-      geocoder.remove();
+      if (geocoder) {
+        geocoder.remove();
+      }
     };
   }, []);
 

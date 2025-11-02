@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cd ../.. && ./node_modules/.bin/prisma generate && cd apps/web && next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "cd ../.. && ./node_modules/.bin/prisma generate || true"
   },
   "dependencies": {
     "react": "19.2.0",

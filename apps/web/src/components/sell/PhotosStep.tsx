@@ -45,21 +45,21 @@ export function PhotosStep({
     <div>
       <h2 className="text-2xl font-bold mb-6">Property Photos</h2>
       <p className="text-sm text-gray-600 mb-4">
-        Upload up to 30 photos (max 10MB each, JPEG/PNG only)
+        Upload up to 30 photos (max 8MB each, JPEG/PNG only)
       </p>
 
       <div className="space-y-4">
         <div>
-          <UploadButton<OurFileRouter>
+          <UploadButton<OurFileRouter, "listingPhotos">
             endpoint="listingPhotos"
             onClientUploadComplete={handleUploadComplete}
             onUploadError={handleUploadError}
             onUploadBegin={() => setUploading(true)}
             content={{
-              button: ({ ready }) => (
+              button: ({ ready }: { ready: boolean }  ) => (
                 ready ? "Upload Photos" : "Preparing..."
               ),
-              allowedContent: "Max 30 images (10MB each)",
+              allowedContent: "Max 30 images (8MB each)",
             }}
           />
         </div>
