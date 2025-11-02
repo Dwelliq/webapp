@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
     "@keyv/tiered",
     "import-in-the-middle",
     "require-in-the-middle",
+    // Prisma packages
+    "@prisma/client",
+    "prisma",
+    "@prisma/client/runtime/library",
+    "@prisma/client/runtime",
   ],
   
   // Use webpack instead of Turbopack (for now, until Turbopack config is stable)
