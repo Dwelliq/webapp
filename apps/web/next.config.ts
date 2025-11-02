@@ -21,12 +21,27 @@ const nextConfig: NextConfig = {
     // Prisma packages
     "@prisma/client",
     "prisma",
-    "@prisma/client/runtime/library",
-    "@prisma/client/runtime",
   ],
   
-  // Use webpack instead of Turbopack (for now, until Turbopack config is stable)
-  // Remove this if you want to use Turbopack and configure it differently
+  // Configure webpack to handle Prisma runtime imports
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Externalize Prisma runtime packages for server builds
+      config.externals = config.externals || [];
+      if (typeof config.externals === 'object' && !Array.isArray(config.externals)) {
+        config.externals = [config.externals];
+      }
+      
+      // Add Prisma runtime to externals
+      const externals = config.externals as any[];
+      externals.push({
+        '@prisma/client/runtime/library': 'commonjs @prisma/client/runtime/library',
+        '@prisma/client/runtime': 'commonjs @prisma/client/runtime',
+      });
+    }
+    
+    return config;
+  },
 };
 
 export default nextConfig;
