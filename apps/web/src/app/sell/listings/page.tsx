@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
-const STATUS_COLORS = {
+const STATUS_COLORS: Record<string, string> = {
   REVIEW: "bg-yellow-100 text-yellow-800",
   LIVE: "bg-green-100 text-green-800",
   PAUSED: "bg-gray-100 text-gray-800",
