@@ -55,7 +55,7 @@ export default async function SellerDashboardPage() {
           </div>
         ) : (
           <div className="grid gap-6">
-            {listings.map((listing) => (
+            {listings.map((listing: typeof listings[0]) => (
               <div
                 key={listing.id}
                 className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
