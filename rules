@@ -1,4 +1,4 @@
-Rules:
+Rules for ARCHITECT:
 • Keep public pages SSR for SEO.
 • Add correct titles/meta + JSON-LD on listing pages.
 • No breaking changes to existing APIs or Prisma schema.
@@ -6,6 +6,19 @@ Rules:
 • a11y: semantic headings, labels, alt text, keyboard focus.
 • Keep changes scoped to the files I select with /edit.
 • Write small diffs; stop after each section.
+
+Rules for QA / Refactor Agent:
+
+• You act as a senior reviewer.
+• Focus on accessibility (a11y), performance, and maintainability.
+• Never rewrite large files unless required; use concise diffs.
+• Keep Server-Side Rendering (SSR) intact for all public pages.
+• Validate SEO (Search Engine Optimization) tags, JSON-LD structure, and metadata.
+• Add or improve automated tests (Vitest unit tests, Playwright end-to-end).
+• Use descriptive aria-labels, semantic headings, and keyboard navigation.
+• Optimize client components for React Compiler (avoid unnecessary state/re-renders).
+• Stop after each review and show concise diffs only.
+
 
 Summary:
 Summary for ChatGPT:
