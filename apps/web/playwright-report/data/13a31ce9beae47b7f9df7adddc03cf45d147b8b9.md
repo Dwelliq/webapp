@@ -1,0 +1,93 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Dwelliq" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - navigation "Global" [ref=e8]:
+        - link "Buy" [ref=e9] [cursor=pointer]:
+          - /url: /search
+        - link "Sell" [ref=e10] [cursor=pointer]:
+          - /url: /sell/listings
+        - link "Saved" [ref=e11] [cursor=pointer]:
+          - /url: /saved
+        - link "Account" [ref=e12] [cursor=pointer]:
+          - /url: /account
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e17]:
+        - heading "Find Your Perfect Property" [level=1] [ref=e18]
+        - paragraph [ref=e19]: Discover amazing properties for sale. Search, browse, and connect with sellers.
+        - form "Search properties" [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e23]: Search Location
+              - textbox "Search" [ref=e24]:
+                - /placeholder: Location, suburb, or address
+            - generic [ref=e25]:
+              - generic [ref=e26]: Min Price
+              - spinbutton "Min Price" [ref=e27]
+            - generic [ref=e28]:
+              - generic [ref=e29]: Max Price
+              - spinbutton "Max Price" [ref=e30]
+            - generic [ref=e31]:
+              - generic [ref=e32]: Bedrooms
+              - combobox "Bedrooms" [ref=e33]:
+                - option "Any" [selected]
+                - option "1+"
+                - option "2+"
+                - option "3+"
+                - option "4+"
+                - option "5+"
+            - generic [ref=e34]:
+              - generic [ref=e35]: Bathrooms
+              - combobox "Bathrooms" [ref=e36]:
+                - option "Any" [selected]
+                - option "1+"
+                - option "2+"
+                - option "3+"
+                - option "4+"
+            - button "Search" [ref=e38]
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "Featured Properties" [level=2] [ref=e41]
+          - link "View all →" [ref=e42] [cursor=pointer]:
+            - /url: /search
+        - paragraph [ref=e44]: No featured listings available at the moment.
+  - contentinfo [ref=e45]:
+    - generic [ref=e46]:
+      - navigation "Footer navigation" [ref=e47]:
+        - list [ref=e48]:
+          - listitem [ref=e49]:
+            - link "How it works" [ref=e50] [cursor=pointer]:
+              - /url: /how
+          - listitem [ref=e51]:
+            - link "Pricing" [ref=e52] [cursor=pointer]:
+              - /url: /pricing
+          - listitem [ref=e53]:
+            - link "Terms" [ref=e54] [cursor=pointer]:
+              - /url: /terms
+          - listitem [ref=e55]:
+            - link "Privacy" [ref=e56] [cursor=pointer]:
+              - /url: /privacy
+          - listitem [ref=e57]:
+            - link "Contact" [ref=e58] [cursor=pointer]:
+              - /url: /contact
+      - paragraph [ref=e60]: © 2025 Dwelliq. All rights reserved.
+  - generic [ref=e65] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e66]:
+      - img [ref=e67]
+    - generic [ref=e70]:
+      - button "Open issues overlay" [ref=e71]:
+        - generic [ref=e72]:
+          - generic [ref=e73]: "0"
+          - generic [ref=e74]: "1"
+        - generic [ref=e75]: Issue
+      - button "Collapse issues badge" [ref=e76]:
+        - img [ref=e77]
+  - alert [ref=e79]
+```

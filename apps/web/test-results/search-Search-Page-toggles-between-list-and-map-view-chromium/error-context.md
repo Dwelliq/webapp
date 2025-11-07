@@ -1,0 +1,103 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Dwelliq" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - navigation "Global" [ref=e8]:
+        - link "Buy" [ref=e9] [cursor=pointer]:
+          - /url: /search
+        - link "Sell" [ref=e10] [cursor=pointer]:
+          - /url: /sell/listings
+        - link "Saved" [ref=e11] [cursor=pointer]:
+          - /url: /saved
+        - link "Account" [ref=e12] [cursor=pointer]:
+          - /url: /account
+      - button "Sign in" [ref=e15]
+  - main [ref=e16]:
+    - generic [ref=e18]:
+      - heading "Search Properties" [level=1] [ref=e19]
+      - form "Search filters" [ref=e21]:
+        - group "Filter properties" [ref=e22]:
+          - generic [ref=e23]: Filter properties
+          - generic [ref=e24]:
+            - generic [ref=e25]:
+              - generic [ref=e26]: Search
+              - textbox "Search" [ref=e27]:
+                - /placeholder: Location, suburb, or address
+                - text: Sydney
+            - generic [ref=e28]:
+              - generic [ref=e29]: Min Price
+              - spinbutton "Min Price" [ref=e30]
+            - generic [ref=e31]:
+              - generic [ref=e32]: Max Price
+              - spinbutton "Max Price" [ref=e33]
+            - generic [ref=e34]:
+              - generic [ref=e35]: Bedrooms
+              - combobox "Bedrooms" [ref=e36]:
+                - option "Any"
+                - option "1+"
+                - option "2+" [selected]
+                - option "3+"
+                - option "4+"
+                - option "5+"
+            - generic [ref=e37]:
+              - generic [ref=e38]: Bathrooms
+              - combobox "Bathrooms" [ref=e39]:
+                - option "Any" [selected]
+                - option "1+"
+                - option "2+"
+                - option "3+"
+                - option "4+"
+            - generic [ref=e40]:
+              - generic [ref=e41]: Property Type
+              - combobox "Property Type" [ref=e42]:
+                - option "Any" [selected]
+                - option "House"
+                - option "Apartment"
+                - option "Townhouse"
+                - option "Unit"
+                - option "Land"
+      - generic [ref=e43]:
+        - status "No properties found" [ref=e44]
+        - generic [ref=e45]:
+          - button "List" [ref=e46]
+          - button "Map" [active] [pressed] [ref=e47]
+      - paragraph [ref=e49]: No properties match your search criteria. Try adjusting your filters.
+  - contentinfo [ref=e50]:
+    - generic [ref=e51]:
+      - navigation "Footer navigation" [ref=e52]:
+        - list [ref=e53]:
+          - listitem [ref=e54]:
+            - link "How it works" [ref=e55] [cursor=pointer]:
+              - /url: /how
+          - listitem [ref=e56]:
+            - link "Pricing" [ref=e57] [cursor=pointer]:
+              - /url: /pricing
+          - listitem [ref=e58]:
+            - link "Terms" [ref=e59] [cursor=pointer]:
+              - /url: /terms
+          - listitem [ref=e60]:
+            - link "Privacy" [ref=e61] [cursor=pointer]:
+              - /url: /privacy
+          - listitem [ref=e62]:
+            - link "Contact" [ref=e63] [cursor=pointer]:
+              - /url: /contact
+      - paragraph [ref=e65]: © 2025 Dwelliq. All rights reserved.
+  - generic [ref=e70] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e71]:
+      - img [ref=e72]
+    - generic [ref=e75]:
+      - button "Open issues overlay" [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]: "0"
+          - generic [ref=e79]: "1"
+        - generic [ref=e80]: Issue
+      - button "Collapse issues badge" [ref=e81]:
+        - img [ref=e82]
+  - alert [ref=e84]
+```
